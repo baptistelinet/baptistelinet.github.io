@@ -1,0 +1,89 @@
+/* Cinque Frati : la traversée des arches */
+.pg-cinque-frati{--pad:clamp(16px,6vw,96px);--terra:#C0603A;overflow-x:clip}
+.pg-cinque-frati .cf-arch{overflow:hidden;border-radius:50% 50% 0 0 / 34% 34% 0 0;background:rgba(43,38,34,.08);position:relative}
+.pg-cinque-frati .cf-arch img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ouverture */
+.pg-cinque-frati .cf-hero{padding:clamp(84px,12vh,120px) var(--pad) clamp(30px,6vh,70px);text-align:center}
+.pg-cinque-frati .cf-hero-wrap{position:relative;width:min(86vw,calc(68svh*1.339));margin:0 auto}
+.pg-cinque-frati .cf-hero-frame{aspect-ratio:1800/1344;width:100%}
+.pg-cinque-frati .cf-hero-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,10,8,.86),rgba(14,10,8,.45) 30%,rgba(14,10,8,0) 58%);pointer-events:none}
+.pg-cinque-frati .cf-ring{position:absolute;inset:-12px;border:1.5px solid var(--terra);border-radius:50% 50% 0 0 / 34% 34% 0 0;border-bottom:0;pointer-events:none}
+.pg-cinque-frati .cf-key{position:absolute;z-index:3;left:50%;top:-28px;width:34px;margin-left:-17px;fill:var(--terra)}
+.pg-cinque-frati .cf-h1{position:absolute;z-index:2;left:0;right:0;top:9%;margin:0;color:#F6EFE6;text-shadow:0 2px 24px rgba(10,6,4,.55);font-weight:300;font-size:clamp(36px,7.4vw,104px);line-height:1;letter-spacing:-.02em;text-align:center}
+.pg-cinque-frati .cf-hero-meta{margin-top:26px}
+.pg-cinque-frati .cf-kind{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+.pg-cinque-frati .cf-meta{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0 0;padding:0}
+.pg-cinque-frati .cf-meta li{font-size:12px;letter-spacing:.06em;border:1px solid currentColor;padding:5px 10px}
+.pg-cinque-frati .cf-hint{margin-top:14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+
+/* tampon */
+.pg-cinque-frati .cf-stamp{display:inline-block;position:relative;z-index:3;margin:0 0 28px;color:var(--terra);border:3px solid var(--terra);border-radius:6px;padding:10px 20px;font-weight:500;font-size:clamp(15px,1.6vw,22px);letter-spacing:.2em;text-transform:uppercase;transform:rotate(-8deg);
+  outline:1.5px solid var(--terra);outline-offset:-9px;}
+.pg-cinque-frati .cf-stamp span{display:block}
+
+/* texte */
+.pg-cinque-frati .cf-story{padding:clamp(60px,12vh,140px) var(--pad);max-width:1180px}
+.pg-cinque-frati .cf-read{font-weight:300;font-size:clamp(24px,3.2vw,44px);line-height:1.28;letter-spacing:-.01em;margin:0 0 .7em;text-wrap:pretty}
+.pg-cinque-frati .cf-read-s{font-size:clamp(18px,1.6vw,22px);max-width:640px}
+.pg-cinque-frati .cf-arcades{display:block;width:min(100%,520px);margin-top:36px;overflow:visible}
+.pg-cinque-frati .cf-arcades path{fill:none;stroke:var(--terra);stroke-width:2}
+
+/* enfilade */
+.pg-cinque-frati .cf-pass{height:100svh;min-height:520px;position:relative}
+.pg-cinque-frati .cf-pass-stage{position:relative;height:100%;overflow:hidden}
+.pg-cinque-frati .cf-pass-stage .cf-stamp{position:absolute;left:var(--pad);top:clamp(70px,12vh,110px);margin:0;z-index:10}
+.pg-cinque-frati .cf-lays{position:absolute;inset:0}
+.pg-cinque-frati .cf-lay{position:absolute;left:50%;top:50%;width:min(80vw,calc(58svh*.9));transform:translate(-50%,-50%);will-change:transform,opacity}
+.pg-cinque-frati .cf-lay[data-k="0"]{z-index:4}.pg-cinque-frati .cf-lay[data-k="1"]{z-index:3}.pg-cinque-frati .cf-lay[data-k="2"]{z-index:2}.pg-cinque-frati .cf-lay[data-k="3"]{z-index:1}
+.pg-cinque-frati .cf-lay-in{position:relative;aspect-ratio:9/10}
+.pg-cinque-frati .cf-lay-in::before,.pg-cinque-frati .cf-lay-in::after{content:"";position:absolute;border:1px solid var(--terra);border-bottom:0;border-radius:50% 50% 0 0 / 34% 34% 0 0;pointer-events:none}
+.pg-cinque-frati .cf-lay-in::before{inset:-12px -12px 0}
+.pg-cinque-frati .cf-lay-in::after{inset:-26px -26px 0;opacity:.45}
+.pg-cinque-frati .cf-lay .cf-arch{position:absolute;inset:0;aspect-ratio:auto!important}
+.pg-cinque-frati .cf-pass-cap{position:absolute;z-index:10;left:var(--pad);right:var(--pad);bottom:clamp(22px,5vh,48px);display:flex;gap:16px;align-items:baseline;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.pg-cinque-frati .cf-pass-cap b{color:var(--terra);font-weight:500}
+
+/* couples */
+.pg-cinque-frati .cf-pair{padding:clamp(60px,12vh,140px) var(--pad) 0}
+.pg-cinque-frati .cf-pair-grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:clamp(18px,4vw,64px);align-items:end}
+.pg-cinque-frati .cf-pair-r .cf-main{order:2}
+.pg-cinque-frati .cf-pair-r .cf-pair-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.9fr)}
+.pg-cinque-frati .cf-fig{position:relative;margin:0;min-width:0}
+.pg-cinque-frati .cf-fig .cf-arch{width:100%}
+.pg-cinque-frati .cf-fig figcaption{font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;opacity:.7}
+.pg-cinque-frati .cf-tag{position:absolute;z-index:3;background:var(--terra);color:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:6px 12px;border-radius:2px;white-space:nowrap}
+.pg-cinque-frati .cf-tag-a{left:-8px;bottom:42px}
+.pg-cinque-frati .cf-tag-b{right:-8px;bottom:42px}
+
+/* matières */
+.pg-cinque-frati .cf-mat{padding:clamp(70px,14vh,160px) 0 0}
+.pg-cinque-frati .cf-mat>.cf-stamp,.pg-cinque-frati .cf-mat>.cf-lead2{margin-left:var(--pad)}
+.pg-cinque-frati .cf-lead2{font-weight:300;font-size:clamp(20px,2vw,28px);margin-bottom:32px;max-width:560px}
+.pg-cinque-frati .cf-bands{display:grid;gap:clamp(10px,1.6vw,18px)}
+.pg-cinque-frati .cf-band{height:clamp(96px,20vh,190px);width:calc(100% - var(--pad)*.6);border-radius:0 999px 999px 0;display:flex;align-items:center;padding-left:var(--pad);position:relative;overflow:hidden}
+.pg-cinque-frati .cf-band span{font-size:clamp(22px,3vw,40px);font-weight:300;letter-spacing:.04em;color:#fff;text-shadow:0 1px 14px rgba(20,12,6,.55)}
+.pg-cinque-frati .cf-wood{background:repeating-linear-gradient(90deg,rgba(55,30,10,0) 0 26px,rgba(55,30,10,.16) 26px 28px),repeating-linear-gradient(0deg,rgba(255,235,200,.07) 0 3px,rgba(40,20,5,.06) 3px 7px),linear-gradient(100deg,#B58656,#C99C6A 45%,#A67749);background-size:auto,auto,100% 100%}
+.pg-cinque-frati .cf-stone{background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22360%22%20height%3D%22120%22%20viewBox%3D%220%200%20360%20120%22%3E%3Cpolygon%20points%3D%220%2C0%2048%2C0%2052%2C34%200%2C34%22%20fill%3D%22%23D8CCB6%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%2248%2C0%2097%2C0%20102%2C34%2052%2C34%22%20fill%3D%22%23CABEA8%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%2297%2C0%20157%2C0%20147%2C39%20102%2C34%22%20fill%3D%22%23CABEA8%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22157%2C0%20198%2C0%20212%2C35%20147%2C39%22%20fill%3D%22%23BFB39C%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22198%2C0%20258%2C0%20252%2C42%20212%2C35%22%20fill%3D%22%23BFB39C%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22258%2C0%20306%2C0%20317%2C41%20252%2C42%22%20fill%3D%22%23C6BAA3%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22306%2C0%20360%2C0%20360%2C39%20317%2C41%22%20fill%3D%22%23BFB39C%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%220%2C34%2052%2C34%2043%2C85%200%2C87%22%20fill%3D%22%23D3C7B1%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%2252%2C34%20102%2C34%2099%2C75%2043%2C85%22%20fill%3D%22%23B7AB95%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22102%2C34%20147%2C39%20147%2C77%2099%2C75%22%20fill%3D%22%23CABEA8%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22147%2C39%20212%2C35%20211%2C76%20147%2C77%22%20fill%3D%22%23B7AB95%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22212%2C35%20252%2C42%20259%2C82%20211%2C76%22%20fill%3D%22%23D8CCB6%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22252%2C42%20317%2C41%20306%2C81%20259%2C82%22%20fill%3D%22%23CABEA8%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22317%2C41%20360%2C39%20360%2C74%20306%2C81%22%20fill%3D%22%23C6BAA3%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%220%2C87%2043%2C85%2044%2C120%200%2C120%22%20fill%3D%22%23D8CCB6%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%2243%2C85%2099%2C75%2098%2C120%2044%2C120%22%20fill%3D%22%23CABEA8%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%2299%2C75%20147%2C77%20158%2C120%2098%2C120%22%20fill%3D%22%23B7AB95%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22147%2C77%20211%2C76%20204%2C120%20158%2C120%22%20fill%3D%22%23D3C7B1%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22211%2C76%20259%2C82%20254%2C120%20204%2C120%22%20fill%3D%22%23D3C7B1%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22259%2C82%20306%2C81%20310%2C120%20254%2C120%22%20fill%3D%22%23B7AB95%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3Cpolygon%20points%3D%22306%2C81%20360%2C74%20360%2C120%20310%2C120%22%20fill%3D%22%23D8CCB6%22%20stroke%3D%22%238A8068%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E") 0 0/auto 100%,#8A8068}
+.pg-cinque-frati .cf-plaster{background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.28),transparent 45%),radial-gradient(circle at 75% 70%,rgba(110,95,80,.18),transparent 50%),radial-gradient(rgba(60,50,40,.07) 1px,transparent 1.6px) 0 0/5px 5px,linear-gradient(90deg,#CFC7B8,#DDD6C8 50%,#C8BFAF)}
+/* bandes claires : étiquette à l'encre pour rester lisible */
+.pg-cinque-frati .cf-plaster span,.pg-cinque-frati .cf-stone span{color:#2B2622;text-shadow:0 1px 10px rgba(255,250,240,.7);font-weight:400}
+
+/* Halles */
+.pg-cinque-frati .cf-halles{padding:clamp(70px,14vh,160px) var(--pad) clamp(64px,10vh,120px)}
+.pg-cinque-frati .cf-halles .cf-fig{width:min(100%,1300px);margin:0 auto}
+
+/* sans animation */
+.pg-cinque-frati.is-static .cf-lay{position:relative;left:auto;top:auto;transform:none;margin:0 auto 40px}
+.pg-cinque-frati.is-static .cf-pass{height:auto}
+.pg-cinque-frati.is-static .cf-lays{position:relative}
+.pg-cinque-frati.is-static .cf-pass-cap{display:none}
+.pg-cinque-frati.is-static .cf-pass-stage .cf-stamp{position:relative;left:auto;top:auto;margin:0 0 40px var(--pad)}
+
+@media (max-width:700px){
+  .pg-cinque-frati .cf-pair-grid,.pg-cinque-frati .cf-pair-r .cf-pair-grid{grid-template-columns:1fr;gap:34px}
+  .pg-cinque-frati .cf-pair-r .cf-main{order:0}
+  .pg-cinque-frati .cf-aux{width:78%;justify-self:end}
+  .pg-cinque-frati .cf-lay{width:min(82vw,calc(54svh*.9))}
+  .pg-cinque-frati .cf-band{border-radius:0 80px 80px 0}
+}

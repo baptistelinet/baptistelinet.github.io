@@ -1,0 +1,42 @@
+[
+  {
+    "file": "img/maison-biarritz/01_vue-exterieure.jpg",
+    "caption": "Façade sur jardin et piscine",
+    "kind": "rendu",
+    "w": 1800,
+    "h": 1013,
+    "note": "Rendu extérieur : extension à toiture à deux pans et colombages verts, terrasse bois, piscine, villa d'origine en brique à l'arrière."
+  },
+  {
+    "file": "img/maison-biarritz/02_salon-salle-a-manger.jpg",
+    "caption": "Salon et salle à manger",
+    "kind": "rendu",
+    "w": 1800,
+    "h": 1013,
+    "note": "Séjour ouvert : canapé blanc, bibliothèque en noyer rétro-éclairée, cave à vin, table en bois massif et cuisine en brique noire."
+  },
+  {
+    "file": "img/maison-biarritz/03_suite-parentale.jpg",
+    "caption": "Suite parentale",
+    "kind": "rendu",
+    "w": 1800,
+    "h": 1013,
+    "note": "Chambre en noyer avec tête de lit enveloppante, baignoire îlot et grande baie à menuiserie verte."
+  },
+  {
+    "file": "img/maison-biarritz/04_dressing-ondule.jpg",
+    "caption": "Dressing aux lignes ondulées",
+    "kind": "rendu",
+    "w": 1800,
+    "h": 1013,
+    "note": "Couloir-dressing en noyer aux découpes courbes en vague, miroirs gravés, bandeaux lumineux et sol en béton ciré."
+  },
+  {
+    "file": "img/maison-biarritz/05_chambre-alcove.jpg",
+    "caption": "Chambre et alcôve lit",
+    "kind": "rendu",
+    "w": 1800,
+    "h": 1013,
+    "note": "Chambre avec façades en chêne, alcôve-lit au papier peint feuillage et suspension en rotin."
+  }
+]

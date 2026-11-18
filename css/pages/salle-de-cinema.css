@@ -1,0 +1,77 @@
+.pg-salle-de-cinema{--ink:#EFECE6;--terra:#C0603A;--glow:#E58A5F;--pad:clamp(16px,6vw,96px);color:#EFECE6;overflow-x:clip}
+.pg-salle-de-cinema .sc-label{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--glow)}
+.pg-salle-de-cinema .sc-lead{font-size:clamp(18px,1.7vw,24px);line-height:1.6;font-weight:300;max-width:46ch}
+.pg-salle-de-cinema figcaption{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;opacity:.7}
+/* accroche 2.39:1 */
+.pg-salle-de-cinema .sc-hero{--wh:min(100svh,calc(100vw / 2.39));position:relative;height:100svh;background:#0c0a09;overflow:hidden}
+.pg-salle-de-cinema .sc-win{position:absolute;left:0;right:0;top:50%;height:var(--wh);transform:translateY(-50%);overflow:hidden;background:#000}
+.pg-salle-de-cinema .sc-win>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pg-salle-de-cinema .sc-win::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(12,10,9,.78),rgba(12,10,9,0) 60%);pointer-events:none}
+.pg-salle-de-cinema .sc-dim{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle 280px at var(--mx,50%) var(--my,50%),rgba(12,10,9,0) 0,rgba(12,10,9,.62) 100%)}
+.pg-salle-de-cinema .sc-cone{position:absolute;z-index:2;left:50%;bottom:0;transform-origin:50% 100%;pointer-events:none;mix-blend-mode:screen;clip-path:polygon(50% 100%,0 0,100% 0);background:linear-gradient(to top,rgba(255,238,210,.55),rgba(255,238,210,.08) 85%,transparent);filter:blur(6px)}
+.pg-salle-de-cinema .sc-title{position:absolute;z-index:3;left:var(--pad);bottom:clamp(20px,4vh,44px);margin:0;font-weight:300;font-size:clamp(48px,6.4vw,112px);line-height:1;letter-spacing:-.02em;max-width:84vw;text-wrap:balance;color:#F4F0E8;text-shadow:0 0 40px rgba(255,238,210,.35)}
+.pg-salle-de-cinema .sc-bar{position:absolute;left:0;right:0;height:calc((100svh - var(--wh)) / 2);background:#0c0a09;z-index:4;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);gap:16px}
+.pg-salle-de-cinema .sc-top{top:0;align-items:flex-end;padding-bottom:12px}
+.pg-salle-de-cinema .sc-bot{bottom:0;align-items:flex-start;padding-top:12px}
+.pg-salle-de-cinema .sc-info{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+@media (max-width:700px){
+  /* sur mobile, la fenêtre 2.39:1 serait trop étroite : on passe en 4:3 */
+  .pg-salle-de-cinema .sc-hero{--wh:calc(100vw * .75)}
+  .pg-salle-de-cinema .sc-win>img{object-position:58% 50%}
+  .pg-salle-de-cinema .sc-title{font-size:clamp(40px,12vw,64px);position:absolute;left:var(--pad);right:var(--pad);bottom:auto;top:calc(100% + 18px);max-width:none;z-index:5}
+  .pg-salle-de-cinema .sc-win{overflow:visible}
+  .pg-salle-de-cinema .sc-win{z-index:5}
+  .pg-salle-de-cinema .sc-bot{align-items:flex-end;padding:0 var(--pad) 22px}
+  .pg-salle-de-cinema .sc-win::after{display:none}
+}
+.pg-salle-de-cinema .sc-sec{padding:clamp(72px,14vh,160px) var(--pad)}
+.pg-salle-de-cinema .sc-intro{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px clamp(24px,6vw,100px);align-items:start}
+.pg-salle-de-cinema .sc-intro .sc-label{grid-column:1/-1}
+.pg-salle-de-cinema .sc-intro .sc-lead{font-size:clamp(22px,2.6vw,38px);line-height:1.3}
+.pg-salle-de-cinema .sc-specs{list-style:none;padding:0;margin:0;grid-row:2/4;grid-column:2;display:grid}
+.pg-salle-de-cinema .sc-specs li{font-size:clamp(18px,1.7vw,24px);font-weight:300;padding:16px 0;border-top:1px solid rgba(239,236,230,.25);display:flex;gap:18px;align-items:baseline}
+.pg-salle-de-cinema .sc-specs small{font-size:12px;letter-spacing:.2em;color:var(--glow)}
+.pg-salle-de-cinema .sc-body{grid-column:1;font-size:clamp(18px,1.7vw,24px);line-height:1.6;font-weight:300;max-width:46ch;opacity:.85}
+@media (max-width:700px){.pg-salle-de-cinema .sc-intro{grid-template-columns:1fr}.pg-salle-de-cinema .sc-specs{grid-row:auto;grid-column:1}}
+/* lumière */
+.pg-salle-de-cinema .sc-light{position:relative;min-height:100svh;background:#2B2622;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pg-salle-de-cinema .sc-stage{width:min(88vw,calc(60svh * 1.777));padding:60px 0 20px}
+.pg-salle-de-cinema .sc-lt-label{margin-bottom:14px}
+.pg-salle-de-cinema .sc-shot{margin:0;position:relative;aspect-ratio:1800/1013;overflow:hidden}
+.pg-salle-de-cinema .sc-shot img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-salle-de-cinema .sc-night{position:absolute;inset:0;background:#070605;opacity:0}
+.pg-salle-de-cinema .sc-floor{display:grid;gap:7px;justify-items:center;margin-top:22px;height:clamp(70px,13svh,130px);align-content:start}
+.pg-salle-de-cinema .sc-floor i{display:block;height:5px;border-radius:3px;background:linear-gradient(90deg,transparent,#F2A97E,transparent);box-shadow:0 0 18px 3px rgba(229,138,95,.6);transform-origin:50% 50%;opacity:0}
+.pg-salle-de-cinema .sc-floor i:nth-child(1){width:34%}.pg-salle-de-cinema .sc-floor i:nth-child(2){width:48%}.pg-salle-de-cinema .sc-floor i:nth-child(3){width:62%}.pg-salle-de-cinema .sc-floor i:nth-child(4){width:78%}.pg-salle-de-cinema .sc-floor i:nth-child(5){width:96%}
+.pg-salle-de-cinema .sc-floor i.on{opacity:1}
+.pg-salle-de-cinema .sc-lt-cap{display:flex;justify-content:space-between;gap:16px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-top:14px;flex-wrap:wrap}
+.pg-salle-de-cinema .sc-lt-cap b{color:var(--glow);font-weight:500}
+.pg-salle-de-cinema .sc-light.is-flat{min-height:0;padding:40px 0}
+/* acoustique */
+.pg-salle-de-cinema .sc-acou{display:grid;gap:18px}
+.pg-salle-de-cinema .sc-acou-lead{margin-bottom:clamp(20px,5vh,60px)}
+.pg-salle-de-cinema .sc-acou-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:end}
+.pg-salle-de-cinema .sc-f3 .k-img{aspect-ratio:3/2}
+.pg-salle-de-cinema .sc-f4{justify-self:end;width:100%;max-width:983px}
+.pg-salle-de-cinema .sc-f4 .k-img{aspect-ratio:983/857;background:#fff}
+@media (max-width:700px){.pg-salle-de-cinema .sc-acou-grid{grid-template-columns:1fr}}
+/* son */
+.pg-salle-de-cinema .sc-son{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
+.pg-salle-de-cinema .sc-plan{width:100%;max-width:600px;height:auto;display:block;overflow:visible}
+.pg-salle-de-cinema .pl-room{fill:rgba(239,236,230,.03);stroke:rgba(239,236,230,.5);stroke-width:1.5}
+.pg-salle-de-cinema .pl-screen{stroke:#F4F0E8;stroke-width:5;stroke-linecap:round}
+.pg-salle-de-cinema .pl-seats rect{fill:none;stroke:rgba(239,236,230,.4);stroke-width:1.2}
+.pg-salle-de-cinema .pl-spk circle{fill:var(--glow)}
+.pg-salle-de-cinema .pl-ceil path{fill:none;stroke:#F4F0E8;stroke-width:2}
+.pg-salle-de-cinema .pl-sub rect{fill:#F4F0E8}
+.pg-salle-de-cinema .pl-w{fill:none;stroke-width:1.5}
+.pg-salle-de-cinema .pl-w.h{stroke:var(--glow)}.pg-salle-de-cinema .pl-w.v{stroke:#F4F0E8}.pg-salle-de-cinema .pl-w.s{stroke:var(--glow);stroke-width:2}
+.pg-salle-de-cinema .sc-son-side{display:grid;gap:14px;justify-items:start}
+.pg-salle-de-cinema .sc-count{margin:0;font-weight:300;font-size:clamp(48px,10vw,160px);line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pg-salle-de-cinema .sc-legend{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+.pg-salle-de-cinema .sc-f5{width:100%;max-width:622px;margin-top:clamp(10px,3vh,30px)}
+.pg-salle-de-cinema .sc-f5 .k-img{aspect-ratio:622/669;background:#EEEAE4}
+.pg-salle-de-cinema .sc-f5 img{object-fit:contain}
+@media (max-width:700px){.pg-salle-de-cinema .sc-son{grid-template-columns:1fr}}
+.page[data-slug="salle-de-cinema"]{--ink:#EFECE6;color:#EFECE6}
+.page[data-slug="salle-de-cinema"] .back{color:#EFECE6}

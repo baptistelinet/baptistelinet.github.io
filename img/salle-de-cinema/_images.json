@@ -1,0 +1,42 @@
+[
+ {
+  "file": "img/salle-de-cinema/01_vue-generale.jpg",
+  "caption": "Canapés en gradins, lattes bois rétroéclairées et bandes lumineuses au sol",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Vue générale de la salle, panneaux acoustiques sur les murs."
+ },
+ {
+  "file": "img/salle-de-cinema/02_vue-ecran.jpg",
+  "caption": "Séance en cours : panneaux muraux rétroéclairés en bleu",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Vue depuis le fond de salle vers l’écran."
+ },
+ {
+  "file": "img/salle-de-cinema/03_textile-texaa.jpg",
+  "caption": "Échantillons de textile acoustique Texaa",
+  "kind": "photo",
+  "w": 1800,
+  "h": 1200,
+  "note": "Palette de tricots acoustiques envisagés pour les parois."
+ },
+ {
+  "file": "img/salle-de-cinema/04_systeme-texaa.jpg",
+  "caption": "Composition et pose du revêtement Texaa Vibrasto",
+  "kind": "detail",
+  "w": 983,
+  "h": 857,
+  "note": "Courbes d’absorption et principe de pose sur baguettes."
+ },
+ {
+  "file": "img/salle-de-cinema/05_schema-dolby-atmos.jpg",
+  "caption": "Implantation Dolby Atmos 9.1.6",
+  "kind": "schema",
+  "w": 622,
+  "h": 669,
+  "note": "Schéma de positionnement des enceintes dans la salle."
+ }
+]

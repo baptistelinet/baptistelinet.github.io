@@ -1,0 +1,71 @@
+/* Maison Biarritz : l'océan entre dans la maison */
+.pg-maison-biarritz{--sea:#A9BDB8;--pad:clamp(16px,6vw,96px);overflow-x:clip}
+.pg-maison-biarritz .bz-hero{position:relative;overflow:hidden;height:max(56.25vw,min(100svh,640px));background:#cfd6c9}
+.pg-maison-biarritz .bz-hero-img,.pg-maison-biarritz .bz-hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pg-maison-biarritz .bz-hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(22,26,22,.7),rgba(22,26,22,0) 55%)}
+.pg-maison-biarritz .bz-band{position:absolute;left:0;top:0;width:200%;height:300%;pointer-events:none;will-change:transform}
+.pg-maison-biarritz .bz-band path{fill:var(--sea)}
+.pg-maison-biarritz .bz-band-b path{fill:#C0603A}
+.pg-maison-biarritz .bz-band-a{z-index:3}
+.pg-maison-biarritz .bz-band-b{z-index:2}
+.pg-maison-biarritz .bz-title{position:absolute;z-index:4;left:var(--pad);right:var(--pad);bottom:clamp(24px,6vh,64px);color:#F6F2EA}
+.pg-maison-biarritz .bz-num{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:500}
+.pg-maison-biarritz .bz-h1{font-weight:300;font-size:clamp(48px,10vw,160px);line-height:.92;letter-spacing:-.02em;margin:8px 0 14px;overflow:hidden;padding-bottom:.08em}
+.pg-maison-biarritz .bz-kind{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500}
+
+.pg-maison-biarritz .bz-brief{padding:clamp(56px,10vh,120px) var(--pad) 0;display:grid;gap:clamp(28px,5vh,56px)}
+.pg-maison-biarritz .bz-brief-txt{max-width:760px}
+.pg-maison-biarritz .bz-lead{font-size:clamp(18px,1.5vw,22px);line-height:1.6;font-weight:300;margin-top:14px}
+.pg-maison-biarritz .bz-meta{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding:0}
+.pg-maison-biarritz .bz-meta li{font-size:12px;letter-spacing:.06em;border:1px solid currentColor;padding:5px 10px}
+.pg-maison-biarritz .bz-facade{margin:0}
+.pg-maison-biarritz .bz-facade-box{position:relative;line-height:0}
+.pg-maison-biarritz .bz-facade-box img{width:100%;height:auto;display:block}
+.pg-maison-biarritz .bz-marks{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pg-maison-biarritz .bz-marks *{fill:none;stroke:#C0603A;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px rgba(255,255,255,.9))}
+.pg-maison-biarritz .bz-pin{position:absolute;width:clamp(22px,2.6vw,34px);height:clamp(22px,2.6vw,34px);margin:calc(clamp(22px,2.6vw,34px)/-2) 0 0 calc(clamp(22px,2.6vw,34px)/-2);border-radius:50%;background:#C0603A;color:#fff;font-size:clamp(11px,1.2vw,15px);font-weight:500;line-height:1;display:grid;place-items:center;box-shadow:0 0 0 3px rgba(255,255,255,.85)}
+.pg-maison-biarritz .bz-legend{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pg-maison-biarritz .bz-legend li{display:flex;gap:12px;align-items:flex-start;font-size:16px;line-height:1.4;border-top:1px solid rgba(43,38,34,.4);padding-top:12px}
+.pg-maison-biarritz .bz-legend b{flex:none;width:24px;height:24px;border-radius:50%;background:#C0603A;color:#fff;font-size:12px;font-weight:500;display:grid;place-items:center}
+
+.pg-maison-biarritz .bz-ocean{padding:clamp(72px,14vh,160px) var(--pad) clamp(40px,8vh,90px)}
+.pg-maison-biarritz .bz-ocean-head{max-width:760px}
+.pg-maison-biarritz .bz-h2{font-weight:300;font-size:clamp(32px,4.6vw,64px);line-height:1;letter-spacing:-.02em;margin:10px 0 18px}
+.pg-maison-biarritz .bz-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,28px);margin:clamp(70px,12vh,130px) calc(var(--pad)*-.55) 40px;padding:50px 0}
+.pg-maison-biarritz .bz-wv{margin:0;will-change:transform}
+.pg-maison-biarritz .bz-wv .bz-img{overflow:hidden;aspect-ratio:1800/1013;background:rgba(43,38,34,.06)}
+.pg-maison-biarritz .bz-wv img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-maison-biarritz .bz-led{display:block;height:3px;margin-top:10px;background:#C0603A;box-shadow:0 0 14px 2px rgba(192,96,58,.55);border-radius:2px}
+.pg-maison-biarritz figcaption{font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;opacity:.7}
+
+.pg-maison-biarritz .bz-dress{padding:clamp(40px,8vh,90px) 0 0}
+.pg-maison-biarritz .bz-dress>.k-label{padding:0 var(--pad);margin-bottom:16px}
+.pg-maison-biarritz .bz-dress-fig{margin:0}
+.pg-maison-biarritz .bz-dress-img{overflow:hidden;aspect-ratio:1800/1013}
+.pg-maison-biarritz .bz-dress-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-maison-biarritz .bz-dress figcaption{padding:0 var(--pad)}
+
+.pg-maison-biarritz .bz-cmp{padding:clamp(72px,14vh,160px) var(--pad) clamp(64px,10vh,120px)}
+.pg-maison-biarritz .bz-cmp-box{--x:50%;position:relative;width:100%;max-width:1400px;aspect-ratio:1800/1013;margin:28px auto 0;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize}
+.pg-maison-biarritz .bz-cmp-a,.pg-maison-biarritz .bz-cmp-b{position:absolute;inset:0;overflow:hidden}
+.pg-maison-biarritz .bz-cmp-b{will-change:clip-path}
+.pg-maison-biarritz .bz-cmp-box img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none}
+.pg-maison-biarritz .bz-tag{position:absolute;bottom:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:#fff;background:rgba(30,26,22,.62);padding:6px 10px;pointer-events:none}
+.pg-maison-biarritz .bz-tag-a{left:14px}
+.pg-maison-biarritz .bz-tag-b{right:14px}
+.pg-maison-biarritz .bz-board{position:absolute;top:-5%;left:var(--x);width:clamp(26px,3vw,40px);height:110%;margin-left:calc(clamp(26px,3vw,40px)/-2);touch-action:none;cursor:grab;outline:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.28));will-change:transform}
+.pg-maison-biarritz .is-drag .bz-board{cursor:grabbing}
+.pg-maison-biarritz .bz-board svg{width:100%;height:100%;display:block;overflow:visible}
+.pg-maison-biarritz .bz-board-body{fill:#F6F0E4;stroke:#2B2622;stroke-width:1.6;vector-effect:non-scaling-stroke}
+.pg-maison-biarritz .bz-board-str{stroke:#C0603A;stroke-width:2;vector-effect:non-scaling-stroke}
+.pg-maison-biarritz .bz-board-fin{fill:#C0603A}
+.pg-maison-biarritz .bz-board:focus-visible .bz-board-body{stroke:#C0603A;stroke-width:3}
+
+@media (max-width:700px){
+  .pg-maison-biarritz .bz-legend{grid-template-columns:1fr}
+  .pg-maison-biarritz .bz-row{grid-template-columns:1fr;margin:60px 0 20px;padding:16px 0}
+  .pg-maison-biarritz .bz-hero{height:max(56.25vw,62svh)}
+  .pg-maison-biarritz .bz-pin{font-size:10px}
+  .pg-maison-biarritz .bz-tag{font-size:8px;letter-spacing:.08em;max-width:42%;white-space:normal;bottom:8px;padding:4px 6px}
+  .pg-maison-biarritz .bz-tag-a{left:8px}.pg-maison-biarritz .bz-tag-b{right:8px;text-align:right}
+}

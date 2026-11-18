@@ -1,0 +1,30 @@
+.pg-contact{background:#EFECE6;height:calc(100svh - 160px);min-height:480px;overflow:hidden;position:relative;--paper:#EFECE6}
+.pg-contact .ct-stage{height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:96px var(--pad) 28px;position:relative}
+.pg-contact .ct-label{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;margin:0}
+.pg-contact .ct-center{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;flex:1}
+.pg-contact .ct-plan{position:absolute;left:50%;top:50%;width:min(100%,1180px);transform:translate(-50%,-50%);height:auto;pointer-events:none;overflow:visible}
+.pg-contact .ct-out line{stroke:#B7B1A6;stroke-width:14;stroke-linecap:square;fill:none;stroke-dasharray:1}
+.pg-contact .ct-in line{stroke:var(--paper);stroke-width:9;stroke-linecap:square}
+.pg-contact .ct-arc{fill:none;stroke:var(--terra);stroke-width:1.5;stroke-dasharray:3 3}
+.pg-contact .ct-door line{stroke:var(--terra);stroke-width:3;stroke-linecap:round}
+.pg-contact .ct-mail{position:relative;z-index:1;background:none;border:0;padding:0;margin:0;font:inherit;color:var(--ink);cursor:pointer;text-align:left;font-weight:300;letter-spacing:-.02em;line-height:1.05;font-size:clamp(34px,6.4vw,112px);white-space:nowrap}
+.pg-contact .ct-mail:focus-visible{outline:2px solid var(--terra);outline-offset:10px}
+.pg-contact .ct-a,.pg-contact .ct-b{display:inline-block;overflow:hidden;padding-bottom:.1em;vertical-align:top}
+.pg-contact .ct-status{position:relative;z-index:1;margin:18px 0 0;height:20px;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
+.pg-contact .ct-status span{opacity:0;display:inline-block}
+.pg-contact .ct-links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 40px;font-size:17px;position:relative;z-index:1}
+.pg-contact .ct-links a{position:relative;display:inline-block;color:inherit;text-decoration:none;padding:6px 0}
+.pg-contact .ct-links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1.5px;background:var(--terra);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.pg-contact .ct-links a:hover::after,.pg-contact .ct-links a:focus-visible::after{transform:scaleX(1)}
+.pg-contact .ct-links a:focus-visible{outline:none}
+.pg-contact .ct-city{opacity:.7}
+.pg-contact .ct-back{margin-left:auto;font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+@media (max-width:700px){
+  .pg-contact{height:calc(100svh - 145px);min-height:560px}
+  .pg-contact .ct-mail{font-size:11.6vw;white-space:normal}
+  .pg-contact .ct-a,.pg-contact .ct-b{display:block}
+  .pg-contact .ct-plan{width:125%}
+  .pg-contact .ct-links{gap:6px 24px}
+  .pg-contact .ct-back{margin-left:0;width:100%}
+}
+.pg-contact line.dg{stroke-linecap:butt!important}

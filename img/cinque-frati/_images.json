@@ -1,0 +1,65 @@
+[
+ {
+  "file": "img/cinque-frati/01_stand_vue-allee.jpg",
+  "caption": "Le stand depuis l'allée des Halles",
+  "kind": "photo",
+  "w": 1800,
+  "h": 1344
+ },
+ {
+  "file": "img/cinque-frati/06_axo_stand.jpg",
+  "caption": "Axonométrie du stand",
+  "kind": "axo",
+  "w": 1764,
+  "h": 1800
+ },
+ {
+  "file": "img/cinque-frati/03_degustation.jpg",
+  "caption": "Comptoir de dégustation",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1005
+ },
+ {
+  "file": "img/cinque-frati/07_axo_degustation.jpg",
+  "caption": "Axonométrie · dégustation",
+  "kind": "axo",
+  "w": 1800,
+  "h": 1213
+ },
+ {
+  "file": "img/cinque-frati/04_boutique-presentoirs.jpg",
+  "caption": "Présentoirs de la boutique",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013
+ },
+ {
+  "file": "img/cinque-frati/08_axo_presentoirs.jpg",
+  "caption": "Axonométrie · présentoirs",
+  "kind": "axo",
+  "w": 1800,
+  "h": 1468
+ },
+ {
+  "file": "img/cinque-frati/05_salon-premium.jpg",
+  "caption": "Salon premium",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1012
+ },
+ {
+  "file": "img/cinque-frati/09_axo_premium.jpg",
+  "caption": "Axonométrie · salon premium",
+  "kind": "axo",
+  "w": 1800,
+  "h": 1750
+ },
+ {
+  "file": "img/cinque-frati/02_stand_vue-halles.jpg",
+  "caption": "Insertion dans les Halles",
+  "kind": "photo",
+  "w": 1800,
+  "h": 1048
+ }
+]

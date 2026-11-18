@@ -1,0 +1,23 @@
+.pg-maison-desert{--ink:#2B2622;--terra:#C0603A;--pad:clamp(16px,6vw,96px);overflow-x:clip}
+.pg-maison-desert .md-defs{position:absolute;width:0;height:0}
+.pg-maison-desert .md-hero{position:relative;padding:clamp(86px,14vh,130px) var(--pad) clamp(60px,10vh,110px);overflow:hidden}
+.pg-maison-desert .md-tag{font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);margin:0 0 10px}
+.pg-maison-desert .md-title{font-weight:300;font-size:clamp(48px,10vw,160px);line-height:.95;letter-spacing:-.02em;margin:0 0 clamp(28px,6vh,60px);max-width:14ch;padding:.05em 0}
+.pg-maison-desert .md-fig{position:relative;margin:0}
+.pg-maison-desert .md-fig1{--ar:1800/900;width:min(100%,86vw)}
+.pg-maison-desert .md-img{position:relative;aspect-ratio:var(--ar,2/1);overflow:hidden;background:#d6b99f}
+.pg-maison-desert .md-img1{--ar:1800/900}.pg-maison-desert .md-img2{--ar:1800/1013}
+.pg-maison-desert .md-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pg-maison-desert .md-dback{position:absolute;left:0;top:0;width:100%;aspect-ratio:var(--ar,2/1);background:#CFA17B;z-index:0}
+.pg-maison-desert .md-img{z-index:1}
+.pg-maison-desert figcaption{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;opacity:.75}
+.pg-maison-desert .md-sand{position:absolute;inset:0;background:#DDB894;z-index:2}
+.pg-maison-desert .md-cv{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.pg-maison-desert .md-void{min-height:70svh;display:grid;place-items:center;padding:clamp(60px,14vh,160px) var(--pad);text-align:center;gap:34px;align-content:center}
+.pg-maison-desert .md-note{max-width:34ch;font-size:clamp(18px,1.7vw,24px);font-weight:300;line-height:1.6;margin:0}
+.pg-maison-desert .md-fin{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;margin:0;color:var(--terra)}
+.pg-maison-desert .md-dune{position:relative;min-height:100svh;display:grid;place-items:center;padding:70px var(--pad) 30px}
+.pg-maison-desert .md-fig2{--ar:1800/1013;width:min(100%,86vw,calc((100svh - 150px) * 1.777))}
+.pg-maison-desert .md-end{min-height:80svh;padding-bottom:clamp(100px,20vh,220px)}
+.pg-maison-desert .md-cactus{position:fixed;right:clamp(4px,1.5vw,24px);bottom:0;width:clamp(44px,6vw,90px);height:auto;aspect-ratio:1/2;opacity:.1;pointer-events:none;z-index:1;transform-origin:50% 100%}
+@media (max-width:700px){.pg-maison-desert .md-void{min-height:46svh}.pg-maison-desert .md-end{min-height:56svh}.pg-maison-desert .md-fig1{width:100%}.pg-maison-desert .md-fig2{--ar:1800/1013;width:100%}.pg-maison-desert .md-cactus{width:42px}}

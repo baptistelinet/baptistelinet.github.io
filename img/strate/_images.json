@@ -1,0 +1,122 @@
+[
+ {
+  "file": "img/strate/01_espace-hybride.jpg",
+  "caption": "Espace hybride sous la charpente",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": ""
+ },
+ {
+  "file": "img/strate/02_accueil.jpg",
+  "caption": "L'accueil",
+  "kind": "rendu",
+  "w": 793,
+  "h": 1092,
+  "note": ""
+ },
+ {
+  "file": "img/strate/03_hall.jpg",
+  "caption": "Le hall",
+  "kind": "rendu",
+  "w": 843,
+  "h": 1152,
+  "note": ""
+ },
+ {
+  "file": "img/strate/04_cafet.jpg",
+  "caption": "La cafet · le comptoir",
+  "kind": "rendu",
+  "w": 1306,
+  "h": 768,
+  "note": ""
+ },
+ {
+  "file": "img/strate/05_cafet-table.jpg",
+  "caption": "La cafet · la table partagée",
+  "kind": "rendu",
+  "w": 851,
+  "h": 1152,
+  "note": ""
+ },
+ {
+  "file": "img/strate/06_mezzanine.jpg",
+  "caption": "La mezzanine",
+  "kind": "rendu",
+  "w": 921,
+  "h": 1152,
+  "note": ""
+ },
+ {
+  "file": "img/strate/07_hybride.jpg",
+  "caption": "Espace hybride",
+  "kind": "rendu",
+  "w": 1440,
+  "h": 1800,
+  "note": ""
+ },
+ {
+  "file": "img/strate/08_bibliotheque.jpg",
+  "caption": "Espace bibliothèque",
+  "kind": "rendu",
+  "w": 1369,
+  "h": 1800,
+  "note": ""
+ },
+ {
+  "file": "img/strate/09_salle-travail.jpg",
+  "caption": "Salle de travail",
+  "kind": "rendu",
+  "w": 872,
+  "h": 1150,
+  "note": ""
+ },
+ {
+  "file": "img/strate/10_collaboratif.jpg",
+  "caption": "Espace de travail collaboratif",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1020,
+  "note": ""
+ },
+ {
+  "file": "img/strate/11_collaboratif-2.jpg",
+  "caption": "Espace de travail collaboratif",
+  "kind": "rendu",
+  "w": 1365,
+  "h": 768,
+  "note": ""
+ },
+ {
+  "file": "img/strate/12_passage-couvert.jpg",
+  "caption": "Le passage couvert",
+  "kind": "rendu",
+  "w": 746,
+  "h": 766,
+  "note": ""
+ },
+ {
+  "file": "img/strate/13_preau.jpg",
+  "caption": "Le préau",
+  "kind": "rendu",
+  "w": 830,
+  "h": 1097,
+  "note": ""
+ },
+ {
+  "file": "img/strate/14_jardin.jpg",
+  "caption": "Le jardin",
+  "kind": "rendu",
+  "w": 1305,
+  "h": 745,
+  "note": ""
+ },
+ {
+  "file": "img/strate/15_jardin-soir.jpg",
+  "caption": "Le jardin, le soir",
+  "kind": "rendu",
+  "w": 1267,
+  "h": 750,
+  "note": ""
+ }
+]

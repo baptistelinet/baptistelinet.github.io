@@ -1,0 +1,42 @@
+[
+ {
+  "file": "img/vespasian-ix/01_pont-arriere-coucher-soleil.jpg",
+  "caption": "Pont arrière au coucher du soleil : table, foyer et bassin lumineux",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Vue en plongée sur le pont, lumière de fin de journée."
+ },
+ {
+  "file": "img/vespasian-ix/02_silhouette-nuit.jpg",
+  "caption": "La silhouette élancée du Vespasian IX au crépuscule",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Étrave effilée et bandeaux lumineux rouges sur la coque noire."
+ },
+ {
+  "file": "img/vespasian-ix/03_silhouette-jour.jpg",
+  "caption": "Coque noire et liseré or en plein jour",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Vue de trois quarts avant, lignes épurées et volumes superposés."
+ },
+ {
+  "file": "img/vespasian-ix/04_pont-panorama.jpg",
+  "caption": "Pont supérieur face à la mer, vue panoramique",
+  "kind": "rendu",
+  "w": 1800,
+  "h": 1013,
+  "note": "Salle à manger, foyer, bassin et transats ouverts sur l’horizon."
+ },
+ {
+  "file": "img/vespasian-ix/05_portrait-bassin.jpg",
+  "caption": "Bassin à débordement et mât au soleil couchant",
+  "kind": "rendu",
+  "w": 1012,
+  "h": 1800,
+  "note": "Format portrait : bassin lumineux, transats et mât radar en contre-jour."
+ }
+]

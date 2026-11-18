@@ -1,0 +1,20 @@
+/* Base commune des pages projet. Chaque page ajoute css/pages/<slug>.css */
+.pg{--pad:clamp(16px,6vw,96px);--ink:#2B2622;--terra:#C0603A;color:var(--ink);min-height:100vh}
+.pg .k-sec{padding:clamp(56px,10vh,120px) var(--pad)}
+.pg .k-head{padding:clamp(88px,14vh,150px) var(--pad) 0}
+.pg .k-num{font-size:13px;letter-spacing:.2em;color:var(--terra)}
+.pg .k-title{font-weight:300;font-size:clamp(46px,9vw,140px);line-height:.92;letter-spacing:-.015em;margin:10px 0 16px;text-wrap:balance}
+.pg .k-kind{font-size:12px;letter-spacing:.22em;text-transform:uppercase}
+.pg .k-meta{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding:0}
+.pg .k-meta li{font-size:12px;letter-spacing:.06em;border:1px solid currentColor;padding:5px 10px}
+.pg .k-lead{max-width:640px;font-size:clamp(18px,1.5vw,22px);line-height:1.6;font-weight:300}
+.pg .k-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra)}
+.pg .k-fig{margin:0;min-width:0}
+.pg .k-img{overflow:hidden;background:rgba(43,38,34,.06);max-width:100%}
+.pg .k-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pg figcaption{font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;opacity:.7}
+.pg .k-ch,.pg .k-w{display:inline-block;will-change:transform}
+.pg .k-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.6vw,24px)}
+.pg .k-grid2 .wide{grid-column:1/-1}
+@media (max-width:700px){.pg .k-grid2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.pg *{animation:none!important;transition:none!important}}
