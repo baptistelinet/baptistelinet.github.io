@@ -1,9 +1,10 @@
-import { ROOMS } from '../projects.js';
+import { ROOMS } from '../projects.js?v=20261119c';
 import { esc } from './_kit.js';
 import { imgSrc } from '../img.js';
 
-const SLUGS = ['vespasian-ix', 'salle-de-cinema', 'maison-biarritz', 'bulle-musicale', 'cinque-frati', 'maison-californienne', 'maison-desert', 'projeter-le-client', 'strate'];
-const TITLES = Object.fromEntries(Object.values(ROOMS).map(r => [r.slug, r.title]));
+// Projets dont les rendus alimentent la planche contact (ajouter ici le slug d'un nouveau projet)
+const SLUGS = ['strate', 'vespasian-ix', 'maison-biarritz', 'cinque-frati', 'salle-de-cinema'];
+const TITLES = Object.fromEntries(Object.values(ROOMS).filter(r => r.slug).map(r => [r.slug, r.title]));
 const pad = (n, l = 3) => String(n).padStart(l, '0');
 const CROPS = [
   { t: 30, r: 34, b: 30, l: 34, label: 'Détail' },

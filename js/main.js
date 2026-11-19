@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { ROOMS, ORDER } from './projects.js';
+import { ROOMS, ORDER } from './projects.js?v=20261119c';
 import { imgSrc } from './img.js';
 
 const gsap = window.gsap;
@@ -140,10 +140,37 @@ document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(w
     }
     if (best) attach(best, o, 'prop');
   });
+  arrangeRooms();
   function attach(r, o, kind) {
     o.userData.room = r.id; r.meshes.push(o); pickables.push(o);
     if (kind === 'wall') r.walls.push(o);
     if (kind === 'prop') { r.props.push(o); o.userData.y0 = o.position.y; }
+  }
+
+  // Pièces rattachées à une autre (partOf) ou libres (empty), voir js/projects.js
+  function arrangeRooms() {
+    const unpick = (m) => { const i = pickables.indexOf(m); if (i >= 0) pickables.splice(i, 1); };
+    const hide = (r) => { r.props.forEach(p => { p.visible = false; unpick(p); r.meshes.splice(r.meshes.indexOf(p), 1); }); r.props = []; };
+    for (const id of Object.keys(rooms)) {
+      const r = rooms[id], def = ROOMS[id];
+      if (def.partOf && rooms[def.partOf]) {
+        // le mobilier de l'ancien projet disparaît, sols et murs passent à la pièce principale
+        hide(r);
+        const main = rooms[def.partOf];
+        const col = main.floor.material.userData.base;
+        r.floor.material.color.copy(col); r.floor.material.userData.base = col.clone();
+        r.meshes.forEach(m => { m.userData.room = main.id; main.meshes.push(m); });
+        main.walls.push(...r.walls);
+        main.box.union(r.box); main.box.getCenter(main.center);
+        delete rooms[id];
+      } else if (def.empty) {
+        // pièce libre : vide, sol neutre, ni survol ni clic
+        hide(r); r.empty = true;
+        r.floor.material.userData.base = new THREE.Color('#E9E4DA');
+        r.floor.material.color.copy(r.floor.material.userData.base);
+        r.meshes.forEach(unpick);
+      }
+    }
   }
 
   // Boîte globale (socle + texte)
@@ -288,7 +315,7 @@ indexEl.addEventListener('mouseleave', () => indexHover = false);
 /* ---------- Animation d'entrée ---------- */
 let introTl = null;
 function intro() {
-  const ids = ORDER;
+  const ids = Object.keys(ROOMS).filter(id => rooms[id]);
   ids.forEach(id => rooms[id].walls.forEach(w => w.scale.y = 0.001));
   ids.forEach(id => rooms[id].props.forEach(p => { p.position.y = p.userData.y0 + 4; p.visible = false; }));
   letters.forEach(l => { l.userData.y0 = l.position.y; l.position.y += 6; l.rotation.x = -1.3; l.visible = false; });
@@ -342,7 +369,7 @@ function roomScreenRect(r) {
 /* ---------- Pages projet : un module par projet (js/pages/<slug>.js) ---------- */
 const ScrollTrigger = window.ScrollTrigger;
 // version des fichiers : évite qu'un navigateur mélange d'anciennes et de nouvelles pages en cache
-const ASSET_V = '20261119b';
+const ASSET_V = '20261119c';
 gsap.registerPlugin(ScrollTrigger);
 // Les pages projet défilent avec la fenêtre elle-même (et non dans un calque qui défile) :
 // défilement natif au doigt comme à la molette, et sections épinglées parfaitement immobiles.
