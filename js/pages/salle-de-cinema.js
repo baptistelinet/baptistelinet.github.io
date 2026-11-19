@@ -3,7 +3,7 @@ import { $$, esc, fig, split } from './_kit.js';
 export default {
   mount(ctx) {
     const { root, scroller, gsap, ScrollTrigger, project: p, images: im, reduced, signal } = ctx;
-    ctx.page.style.setProperty('--room', '#2B2622');
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#2B2622');
     const st = (o) => Object.assign({ scroller }, o);
     const fine = matchMedia('(pointer:fine)').matches && innerWidth > 700;
     const NS = 'http://www.w3.org/2000/svg';

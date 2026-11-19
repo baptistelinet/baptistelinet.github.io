@@ -46,7 +46,7 @@ export default {
     const { root, scroller, gsap, ScrollTrigger, project: p, reduced } = ctx;
     const signal = ctx.signal;
     ScrollTrigger.defaults({ scroller });
-    ctx.page.style.setProperty('--room', '#E5CBB6');
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#E5CBB6');
     root.style.background = '#E5CBB6';
     const images = (ctx.images || []).slice();
     const small = () => matchMedia('(max-width:700px)').matches;

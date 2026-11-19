@@ -57,8 +57,8 @@ export default {
     const arc = $('#caArc'), dot = $('.ca-dot'), halo = $('.ca-dot-halo'), timeEl = $('.ca-time');
     const legs = $$('.ca-leg');
 
-    ctx.page.style.setProperty('--room', '#EFD9C9');
-    ctx.page.style.backgroundColor = '#EFD9C9';
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#EFD9C9');
+    (ctx.page || ctx.scroller).style.backgroundColor = '#EFD9C9';
 
     const arcLen = arc.getTotalLength();
     const placeSun = (d) => {
@@ -148,9 +148,9 @@ export default {
       .to(legs[3], { opacity: 1, y: 0, duration: 0.4 }, 8.7)
       .to({}, { duration: 1.1 }, 8.9);
     // fond de page : pêche -> pêche rosée
-    gsap.to(ctx.page, { backgroundColor: '#E5CBB6', ease: 'none',
+    gsap.to(ctx.page || ctx.scroller, { backgroundColor: '#E5CBB6', ease: 'none',
       scrollTrigger: st({ trigger: '#caPin', start: 'top top', end: '+=440%', scrub: 0.6 }),
-      onUpdate() { ctx.page.style.setProperty('--room', ctx.page.style.backgroundColor); } });
+      onUpdate() { (ctx.page || ctx.scroller).style.setProperty('--room', (ctx.page || ctx.scroller).style.backgroundColor); } });
 
     gsap.from('.ca-coda p,.ca-coda span', { y: 24, opacity: 0, duration: 0.9, ease: 'power3.out', stagger: 0.12, scrollTrigger: st({ trigger: '.ca-coda', start: 'top 85%' }) });
   },
