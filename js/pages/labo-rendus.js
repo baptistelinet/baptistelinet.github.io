@@ -1,5 +1,6 @@
 import { ROOMS } from '../projects.js';
 import { esc } from './_kit.js';
+import { imgSrc } from '../img.js';
 
 const SLUGS = ['vespasian-ix', 'salle-de-cinema', 'maison-biarritz', 'bulle-musicale', 'cinque-frati', 'maison-californienne', 'maison-desert', 'projeter-le-client', 'strate'];
 const TITLES = Object.fromEntries(Object.values(ROOMS).map(r => [r.slug, r.title]));
@@ -14,7 +15,7 @@ const CROPS = [
 async function loadAll() {
   const lists = await Promise.all(SLUGS.map(s =>
     fetch(`img/${s}/_images.json`).then(r => (r.ok ? r.json() : [])).catch(() => [])
-      .then(a => (Array.isArray(a) ? a : []).filter(i => i && i.file && (!i.kind || i.kind === 'rendu')).map(i => ({ ...i, slug: s, project: TITLES[s] || s })))));
+      .then(a => (Array.isArray(a) ? a : []).filter(i => i && i.file && (!i.kind || i.kind === 'rendu')).map(i => ({ ...i, file: imgSrc(i.file), slug: s, project: TITLES[s] || s })))));
   return lists.flat();
 }
 
