@@ -102,13 +102,13 @@ export default {
     const $$ = (s, r = root) => [...r.querySelectorAll(s)];
 
     // ----- fond : sauge océan -> pêche -----
-    ctx.page.style.setProperty('--room', '#DADDD0');
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#DADDD0');
     root.style.background = 'transparent';
-    ctx.page.style.backgroundColor = '#DADDD0';
+    (ctx.page || ctx.scroller).style.backgroundColor = '#DADDD0';
     if (!reduced) {
-      gsap.to(ctx.page, { backgroundColor: '#EFD9C9', ease: 'none',
+      gsap.to(ctx.page || ctx.scroller, { backgroundColor: '#EFD9C9', ease: 'none',
         scrollTrigger: st({ trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6 }),
-        onUpdate() { ctx.page.style.setProperty('--room', ctx.page.style.backgroundColor); } });
+        onUpdate() { (ctx.page || ctx.scroller).style.setProperty('--room', (ctx.page || ctx.scroller).style.backgroundColor); } });
     }
 
     // ----- ouverture : la vague balaie l'écran -----
