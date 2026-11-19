@@ -364,7 +364,6 @@ export default {
     });
 
     // images : rafraîchir les positions une fois chargées
-    qa('img').forEach(img => img.addEventListener('load', () => ScrollTrigger.refresh(), { signal, once: true }));
     requestAnimationFrame(() => ScrollTrigger.refresh());
   },
 };
