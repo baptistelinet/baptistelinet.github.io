@@ -342,6 +342,17 @@ function roomScreenRect(r) {
 /* ---------- Pages projet : un module par projet (js/pages/<slug>.js) ---------- */
 const ScrollTrigger = window.ScrollTrigger;
 gsap.registerPlugin(ScrollTrigger);
+// Les pages défilent dans un calque plein écran (#page). Par défaut GSAP « épingle » alors les sections
+// en les déplaçant à chaque image, avec un temps de retard sur le défilement réel : d'où des va-et-vient.
+// En épinglant en position fixe, la section reste parfaitement immobile.
+ScrollTrigger.defaults({ scroller: page, pinType: 'fixed' });
+ScrollTrigger.config({ ignoreMobileResize: true });
+// Recalcul des positions seulement si la hauteur de la page change vraiment (images, polices), et en différé
+let roH = 0, roT = 0;
+const ro = new ResizeObserver(() => {
+  const h = pRoot.offsetHeight; if (Math.abs(h - roH) < 2) return; roH = h;
+  clearTimeout(roT); roT = setTimeout(() => ScrollTrigger.refresh(), 250);
+});
 const pRoot = $('pRoot');
 let pageCtx = null, pageAbort = null;
 const cssLoaded = new Set();
@@ -386,9 +397,10 @@ function mountPage(id, { mod, images }) {
     ctx.add = (fn) => pageCtx ? pageCtx.add(fn) : fn();
     mod.mount(ctx);
   }, page);
-  requestAnimationFrame(() => ScrollTrigger.refresh());
+  requestAnimationFrame(() => { ScrollTrigger.refresh(); roH = pRoot.offsetHeight; ro.observe(pRoot); });
 }
 function unmountPage() {
+  ro.disconnect(); clearTimeout(roT);
   if (pageAbort) { pageAbort.abort(); pageAbort = null; }
   if (pageCtx) { pageCtx.revert(); pageCtx = null; }
   page.style.removeProperty('--room'); page.style.removeProperty('background');
@@ -424,7 +436,7 @@ function openRoom(id, instant = false) {
       const [a0, a1, a2, a3] = roomScreenRect(r), ins = { a0, a1, a2, a3 };
       const setClip = () => { page.style.clipPath = `inset(${ins.a0}px ${ins.a1}px ${ins.a2}px ${ins.a3}px)`; };
       setClip();
-      gsap.to(ins, { a0: 0, a1: 0, a2: 0, a3: 0, duration: instant ? 0.01 : 0.6, ease: 'power3.inOut', onUpdate: setClip });
+      gsap.to(ins, { a0: 0, a1: 0, a2: 0, a3: 0, duration: instant ? 0.01 : 0.6, ease: 'power3.inOut', onUpdate: setClip, onComplete: () => { page.style.clipPath = 'none'; ScrollTrigger.refresh(); } });
     });
   }, instant ? D : D * 0.85 + 0.12);
 }
