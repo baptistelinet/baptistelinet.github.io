@@ -11,7 +11,7 @@ const body = document.body;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer: fine)').matches;
 if (finePointer) body.classList.add('pointer-fine');
-else document.getElementById('hint').textContent = 'Glissez pour parcourir · touchez une pièce';
+else document.getElementById('hint').textContent = 'Touchez une pièce pour entrer';
 
 /* ---------- Rendu ---------- */
 const canvas = $('scene');
@@ -87,7 +87,7 @@ function makeSubtitle(ref) {
   m.position.set(ref.position.x, 0.012, ref.position.z + 0.12);
   return m;
 }
-let homeHalfH = 10, modelBox = new THREE.Box3(), baseQuat = new THREE.Quaternion();
+let homeHalfH = 10, modelBox = new THREE.Box3(), baseQuat = new THREE.Quaternion(), homeQuat = new THREE.Quaternion();
 const view = { target: new THREE.Vector3(), zoom: 1, q: new THREE.Quaternion(), pan: 0 };
 
 document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(window.MODEL_URL || 'assets/maison-linet.glb', (gltf) => {
@@ -150,7 +150,7 @@ document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(w
   modelBox.expandByObject(root.getObjectByName('baptiste_0_B'));
   const mc = modelBox.getCenter(new THREE.Vector3());
   view.target.copy(mc).setY(0);
-  view.q.copy(baseQuat);
+  homeQuat.copy(baseQuat); view.q.copy(baseQuat);
   sun.position.set(mc.x - 10, 26, mc.z + 12);
   sun.target.position.copy(mc);
   sun.shadow.camera.updateProjectionMatrix();
@@ -167,30 +167,47 @@ document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(w
 (err) => { console.error(err); $('loader').innerHTML = '<span>Impossible de charger la maquette.</span>'; }));
 
 /* ---------- Cadrage ---------- */
+// La maquette entière doit tenir dans l'écran, quel que soit l'appareil.
+// En portrait, on incline légèrement la vue (rotation dans le plan de l'écran) pour que
+// la bande LINET, qui court en diagonale, occupe mieux un écran haut et étroit.
 let modelW = 1, modelH = 1;
+const Z_AXIS = new THREE.Vector3(0, 0, 1), qRoll = new THREE.Quaternion(), qInv = new THREE.Quaternion(), pt = new THREE.Vector3();
+function extent(q) {
+  qInv.copy(q).invert();
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  for (let i = 0; i < 8; i++) {
+    pt.set(i & 1 ? modelBox.max.x : modelBox.min.x, i & 2 ? modelBox.max.y : modelBox.min.y, i & 4 ? modelBox.max.z : modelBox.min.z).sub(view.target).applyQuaternion(qInv);
+    x0 = Math.min(x0, pt.x); x1 = Math.max(x1, pt.x); y0 = Math.min(y0, pt.y); y1 = Math.max(y1, pt.y);
+  }
+  return [x1 - x0, y1 - y0];
+}
 function resize() {
   const w = innerWidth, h = innerHeight, a = w / h;
   renderer.setSize(w, h, false);
-  // étendue du socle vue depuis la caméra axo
-  const inv = baseQuat.clone().invert();
-  const pts = [];
-  for (let i = 0; i < 8; i++) pts.push(new THREE.Vector3(i & 1 ? modelBox.max.x : modelBox.min.x, i & 2 ? modelBox.max.y : modelBox.min.y, i & 4 ? modelBox.max.z : modelBox.min.z).sub(view.target).applyQuaternion(inv));
-  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
-  modelW = Math.max(...xs) - Math.min(...xs); modelH = Math.max(...ys) - Math.min(...ys);
-  const portrait = a < 0.9;
-  homeHalfH = portrait ? modelH * 1.25 : Math.max(modelH / 2, modelW / 2 / a) * 1.12;
+  // marges : en-tête en haut, consigne en bas, un peu d'air sur les côtés
+  const small = Math.min(w, h) < 600;
+  const padY = small ? 64 : 90, padX = small ? 14 : 40;
+  const fy = Math.max(0.5, (h - 2 * padY) / h), fx = Math.max(0.6, (w - 2 * padX) / w);
+  const fit = (W, H) => Math.max(H / 2 / fy, W / 2 / a / fx);
+  let best = 0, bestH = Infinity;
+  if (a < 1.25) { // portrait ou presque carré : chercher la meilleure inclinaison (±28°)
+    for (let d = -28; d <= 28; d += 1) {
+      const [W, H] = extent(qRoll.setFromAxisAngle(Z_AXIS, d * Math.PI / 180).premultiply(baseQuat));
+      const hh = fit(W, H) * (1 + Math.abs(d) * 0.004); // légère préférence pour l'angle d'origine
+      if (hh < bestH) { bestH = hh; best = d; }
+    }
+  }
+  homeQuat.copy(baseQuat).multiply(qRoll.setFromAxisAngle(Z_AXIS, best * Math.PI / 180));
+  [modelW, modelH] = extent(homeQuat);
+  homeHalfH = fit(modelW, modelH);
   camera.left = -homeHalfH * a; camera.right = homeHalfH * a; camera.top = homeHalfH; camera.bottom = -homeHalfH;
   camera.updateProjectionMatrix();
-  if (portrait && !resize.done) { view.pan = -1e9; resize.done = true; }
-  clampPan();
+  if (!activeRoom && !busy) view.q.copy(homeQuat);
+  view.pan = 0;
   needsRender = 2;
 }
 addEventListener('resize', resize);
-function clampPan() {
-  const halfVisW = homeHalfH * innerWidth / innerHeight / view.zoom;
-  const lim = Math.max(0, modelW / 2 - halfVisW * 0.85);
-  view.pan = Math.max(-lim, Math.min(lim, view.pan));
-}
+function clampPan() { view.pan = 0; }
 
 /* ---------- Pointeur, survol ---------- */
 const pointer = new THREE.Vector2(9, 9), smoothP = new THREE.Vector2();
@@ -424,7 +441,7 @@ function closeRoom() {
   gsap.to(from, {
     t: 1, duration: reduced ? 0.01 : 0.95, ease: 'expo.inOut', delay: 0.1,
     onUpdate: () => {
-      view.q.slerpQuaternions(q0, baseQuat, from.t);
+      view.q.slerpQuaternions(q0, homeQuat, from.t);
       view.target.lerpVectors(t0, home, from.t);
       view.zoom = Math.exp(z0 * (1 - from.t));
     },
