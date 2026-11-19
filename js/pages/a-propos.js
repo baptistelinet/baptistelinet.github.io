@@ -1,4 +1,4 @@
-import { ROOMS } from '../projects.js';
+import { ROOMS } from '../projects.js?v=20261119c';
 import { esc, split } from './_kit.js';
 
 const TITLES = Object.fromEntries(Object.values(ROOMS).filter(r => r.slug).map(r => [r.slug, r.title]));

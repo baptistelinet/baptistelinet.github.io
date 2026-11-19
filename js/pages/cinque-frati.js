@@ -83,7 +83,7 @@ export default {
     const $ = (s, r = root) => r.querySelector(s);
     const $$ = (s, r = root) => [...r.querySelectorAll(s)];
 
-    ctx.page.style.setProperty('--room', '#EFD9C9');
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#EFD9C9');
 
     // lecture mot à mot
     const words = $$('[data-read]').map(el => split(el, 'words'));

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { ROOMS, ORDER } from './projects.js';
+import { ROOMS, ORDER } from './projects.js?v=20261119c';
 import { imgSrc } from './img.js';
 
 const gsap = window.gsap;
@@ -368,6 +368,8 @@ function roomScreenRect(r) {
 
 /* ---------- Pages projet : un module par projet (js/pages/<slug>.js) ---------- */
 const ScrollTrigger = window.ScrollTrigger;
+// version des fichiers : évite qu'un navigateur mélange d'anciennes et de nouvelles pages en cache
+const ASSET_V = '20261119c';
 gsap.registerPlugin(ScrollTrigger);
 // Les pages projet défilent avec la fenêtre elle-même (et non dans un calque qui défile) :
 // défilement natif au doigt comme à la molette, et sections épinglées parfaitement immobiles.
@@ -395,10 +397,10 @@ function ensureCss(href) {
 function loadPage(id) {
   const p = ROOMS[id];
   return Promise.all([
-    import(`./pages/${p.slug}.js`).catch(() => import('./pages/_default.js')),
+    import(`./pages/${p.slug}.js?v=${ASSET_V}`).catch(() => import('./pages/_default.js')),
     fetch(`img/${p.slug}/_images.json`).then(r => (r.ok ? r.json() : [])).catch(() => [])
       .then(a => (Array.isArray(a) ? a.map(im => (im && im.file ? { ...im, file: imgSrc(im.file) } : im)) : [])),
-    ensureCss(`css/pages/${p.slug}.css`),
+    ensureCss(`css/pages/${p.slug}.css?v=${ASSET_V}`),
   ]).then(([mod, images]) => ({ mod: mod.default, images }));
 }
 function fillNav(id) {

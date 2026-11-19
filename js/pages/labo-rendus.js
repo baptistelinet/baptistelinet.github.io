@@ -1,4 +1,4 @@
-import { ROOMS } from '../projects.js';
+import { ROOMS } from '../projects.js?v=20261119c';
 import { esc } from './_kit.js';
 import { imgSrc } from '../img.js';
 

@@ -3,7 +3,7 @@ import { h, $$, esc, fig, split } from './_kit.js';
 export default {
   mount(ctx) {
     const { root, scroller, gsap, ScrollTrigger, project: p, images: im, reduced, signal } = ctx;
-    ctx.page.style.setProperty('--room', '#DADDD0');
+    (ctx.page || ctx.scroller).style.setProperty('--room', '#DADDD0');
     const st = (o) => Object.assign({ scroller }, o);
     const pad3 = (n) => String(Math.round(n)).padStart(3, '0');
     const sentences = (p.text || '').split(/(?<=\.)\s+/);
