@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { ROOMS, ORDER } from './projects.js';
+import { imgSrc } from './img.js';
 
 const gsap = window.gsap;
 gsap.ticker.lagSmoothing(0);
@@ -10,17 +11,21 @@ const body = document.body;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = matchMedia('(pointer: fine)').matches;
 if (finePointer) body.classList.add('pointer-fine');
-else document.getElementById('hint').textContent = 'Glissez pour parcourir · touchez une pièce';
+else document.getElementById('hint').textContent = 'Touchez une pièce pour entrer';
 
 /* ---------- Rendu ---------- */
 const canvas = $('scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, finePointer ? 2 : 1.5));
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+// Résolution : plafonnée selon l'appareil, puis ajustée si les images par seconde chutent (voir tick)
+const lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 3;
+let dprCap = finePointer ? 2 : (lowEnd ? 1.25 : 1.5);
+renderer.setPixelRatio(Math.min(devicePixelRatio, dprCap));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NeutralToneMapping;
 renderer.toneMappingExposure = 1.08;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false; // ombres recalculées seulement quand un objet bouge
 
 const BG = new THREE.Color('#EFECE6');
 const scene = new THREE.Scene();
@@ -44,21 +49,12 @@ scene.add(lamp, lamp.target);
 
 const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 400);
 
-/* ---------- Texture liège procédurale ---------- */
+/* ---------- Texture liège (précalculée : img/liege.jpg) ---------- */
 function corkTexture() {
-  const S = 1024, c = document.createElement('canvas'); c.width = c.height = S;
-  const g = c.getContext('2d');
-  g.fillStyle = '#dccdb4'; g.fillRect(0, 0, S, S);
-  // granulés de liège : beaucoup de petits grains, contraste faible
-  for (let i = 0; i < 60000; i++) {
-    const x = Math.random() * S, y = Math.random() * S, r = Math.random() * 1.6 + 0.4;
-    g.fillStyle = Math.random() < 0.55 ? `rgba(135,96,58,${0.05 + Math.random() * 0.1})` : `rgba(250,240,220,${0.06 + Math.random() * 0.12})`;
-    g.beginPath(); g.ellipse(x, y, r, r * (0.5 + Math.random() * 0.5), Math.random() * 3, 0, 7); g.fill();
-  }
-  const t = new THREE.CanvasTexture(c);
+  const t = new THREE.TextureLoader().load('img/liege.jpg', () => { needsRender = 2; });
   t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 8;
+  t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   return t;
 }
 
@@ -84,14 +80,14 @@ function makeSubtitle(ref) {
   c.width = Math.ceil(textW) + 8; c.height = px;
   g.font = font; g.fillStyle = '#2B2622'; g.textBaseline = 'alphabetic';
   let x = 4; chars.forEach((ch, i) => { g.fillText(ch, x, px * 0.86); x += widths[i] + spacing; });
-  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const W = H * c.width / c.height;
   const geo = new THREE.PlaneGeometry(W, H); geo.translate(W / 2, H / 2, 0); geo.rotateX(-Math.PI / 2);
   const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }));
   m.position.set(ref.position.x, 0.012, ref.position.z + 0.12);
   return m;
 }
-let homeHalfH = 10, modelBox = new THREE.Box3(), baseQuat = new THREE.Quaternion();
+let homeHalfH = 10, modelBox = new THREE.Box3(), baseQuat = new THREE.Quaternion(), homeQuat = new THREE.Quaternion();
 const view = { target: new THREE.Vector3(), zoom: 1, q: new THREE.Quaternion(), pan: 0 };
 
 document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(window.MODEL_URL || 'assets/maison-linet.glb', (gltf) => {
@@ -154,12 +150,14 @@ document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(w
   modelBox.expandByObject(root.getObjectByName('baptiste_0_B'));
   const mc = modelBox.getCenter(new THREE.Vector3());
   view.target.copy(mc).setY(0);
-  view.q.copy(baseQuat);
+  homeQuat.copy(baseQuat); view.q.copy(baseQuat);
   sun.position.set(mc.x - 10, 26, mc.z + 12);
   sun.target.position.copy(mc);
   sun.shadow.camera.updateProjectionMatrix();
 
   if (subLine) { subtitle = makeSubtitle(subLine); scene.add(subtitle); }
+  renderer.shadowMap.needsUpdate = true;
+  renderer.compile(scene, camera); // compile les shaders avant l'intro (évite les saccades au premier rendu)
   resize();
   buildIndex();
   body.classList.add('ready');
@@ -169,29 +167,47 @@ document.fonts.load('500 40px Jost').catch(() => {}).finally(() => loader.load(w
 (err) => { console.error(err); $('loader').innerHTML = '<span>Impossible de charger la maquette.</span>'; }));
 
 /* ---------- Cadrage ---------- */
+// La maquette entière doit tenir dans l'écran, quel que soit l'appareil.
+// En portrait, on incline légèrement la vue (rotation dans le plan de l'écran) pour que
+// la bande LINET, qui court en diagonale, occupe mieux un écran haut et étroit.
 let modelW = 1, modelH = 1;
+const Z_AXIS = new THREE.Vector3(0, 0, 1), qRoll = new THREE.Quaternion(), qInv = new THREE.Quaternion(), pt = new THREE.Vector3();
+function extent(q) {
+  qInv.copy(q).invert();
+  let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+  for (let i = 0; i < 8; i++) {
+    pt.set(i & 1 ? modelBox.max.x : modelBox.min.x, i & 2 ? modelBox.max.y : modelBox.min.y, i & 4 ? modelBox.max.z : modelBox.min.z).sub(view.target).applyQuaternion(qInv);
+    x0 = Math.min(x0, pt.x); x1 = Math.max(x1, pt.x); y0 = Math.min(y0, pt.y); y1 = Math.max(y1, pt.y);
+  }
+  return [x1 - x0, y1 - y0];
+}
 function resize() {
   const w = innerWidth, h = innerHeight, a = w / h;
   renderer.setSize(w, h, false);
-  // étendue du socle vue depuis la caméra axo
-  const inv = baseQuat.clone().invert();
-  const pts = [];
-  for (let i = 0; i < 8; i++) pts.push(new THREE.Vector3(i & 1 ? modelBox.max.x : modelBox.min.x, i & 2 ? modelBox.max.y : modelBox.min.y, i & 4 ? modelBox.max.z : modelBox.min.z).sub(view.target).applyQuaternion(inv));
-  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
-  modelW = Math.max(...xs) - Math.min(...xs); modelH = Math.max(...ys) - Math.min(...ys);
-  const portrait = a < 0.9;
-  homeHalfH = portrait ? modelH * 1.25 : Math.max(modelH / 2, modelW / 2 / a) * 1.12;
+  // marges : en-tête en haut, consigne en bas, un peu d'air sur les côtés
+  const small = Math.min(w, h) < 600;
+  const padY = small ? 64 : 90, padX = small ? 14 : 40;
+  const fy = Math.max(0.5, (h - 2 * padY) / h), fx = Math.max(0.6, (w - 2 * padX) / w);
+  const fit = (W, H) => Math.max(H / 2 / fy, W / 2 / a / fx);
+  let best = 0, bestH = Infinity;
+  if (a < 1.25) { // portrait ou presque carré : chercher la meilleure inclinaison (±28°)
+    for (let d = -28; d <= 28; d += 1) {
+      const [W, H] = extent(qRoll.setFromAxisAngle(Z_AXIS, d * Math.PI / 180).premultiply(baseQuat));
+      const hh = fit(W, H) * (1 + Math.abs(d) * 0.004); // légère préférence pour l'angle d'origine
+      if (hh < bestH) { bestH = hh; best = d; }
+    }
+  }
+  homeQuat.copy(baseQuat).multiply(qRoll.setFromAxisAngle(Z_AXIS, best * Math.PI / 180));
+  [modelW, modelH] = extent(homeQuat);
+  homeHalfH = fit(modelW, modelH);
   camera.left = -homeHalfH * a; camera.right = homeHalfH * a; camera.top = homeHalfH; camera.bottom = -homeHalfH;
   camera.updateProjectionMatrix();
-  if (portrait && !resize.done) { view.pan = -1e9; resize.done = true; }
-  clampPan();
+  if (!activeRoom && !busy) view.q.copy(homeQuat);
+  view.pan = 0;
+  needsRender = 2;
 }
 addEventListener('resize', resize);
-function clampPan() {
-  const halfVisW = homeHalfH * innerWidth / innerHeight / view.zoom;
-  const lim = Math.max(0, modelW / 2 - halfVisW * 0.85);
-  view.pan = Math.max(-lim, Math.min(lim, view.pan));
-}
+function clampPan() { view.pan = 0; }
 
 /* ---------- Pointeur, survol ---------- */
 const pointer = new THREE.Vector2(9, 9), smoothP = new THREE.Vector2();
@@ -199,7 +215,9 @@ const ray = new THREE.Raycaster();
 let hovered = null, activeRoom = null, introDone = false, pageOpen = false, busy = false;
 const cursor = $('cursor'), cursorLbl = $('cursorLbl'), tag = $('tag');
 
+let pointerMoved = false;
 addEventListener('pointermove', (e) => {
+  pointerMoved = true;
   pointer.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
   cursor.style.transform = `translate(${e.clientX}px,${e.clientY}px)`;
 });
@@ -241,6 +259,7 @@ addEventListener('pointerup', (e) => {
   const wasTap = !down.moved; down = null;
   if (!introDone) { skipIntro(); return; }
   if (!wasTap || pageOpen) return;
+  pointerMoved = true;
   pointer.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
   const id = pick();
   if (id) location.hash = '#/' + ROOMS[id].slug;
@@ -300,6 +319,7 @@ function intro() {
 function skipIntro() { if (introTl && !introDone) introTl.progress(1); }
 function endIntro() {
   introDone = true; body.classList.add('intro-done');
+  renderer.shadowMap.needsUpdate = true; needsRender = 2;
   route();
 }
 
@@ -337,7 +357,8 @@ function loadPage(id) {
   const p = ROOMS[id];
   return Promise.all([
     import(`./pages/${p.slug}.js`).catch(() => import('./pages/_default.js')),
-    fetch(`img/${p.slug}/_images.json`).then(r => (r.ok ? r.json() : [])).catch(() => []),
+    fetch(`img/${p.slug}/_images.json`).then(r => (r.ok ? r.json() : [])).catch(() => [])
+      .then(a => (Array.isArray(a) ? a.map(im => (im && im.file ? { ...im, file: imgSrc(im.file) } : im)) : [])),
     ensureCss(`css/pages/${p.slug}.css`),
   ]).then(([mod, images]) => ({ mod: mod.default, images }));
 }
@@ -420,7 +441,7 @@ function closeRoom() {
   gsap.to(from, {
     t: 1, duration: reduced ? 0.01 : 0.95, ease: 'expo.inOut', delay: 0.1,
     onUpdate: () => {
-      view.q.slerpQuaternions(q0, baseQuat, from.t);
+      view.q.slerpQuaternions(q0, homeQuat, from.t);
       view.target.lerpVectors(t0, home, from.t);
       view.zoom = Math.exp(z0 * (1 - from.t));
     },
@@ -447,19 +468,29 @@ function route() {
 addEventListener('hashchange', route);
 
 /* ---------- Boucle ---------- */
-const right = new THREE.Vector3(), fwd = new THREE.Vector3(), tmp = new THREE.Vector3(), white = new THREE.Color('#ffffff');
+// La scène n'est redessinée que si quelque chose a changé (caméra, survol, animation) :
+// à l'arrêt, le téléphone ne calcule plus rien et la batterie est épargnée.
+const right = new THREE.Vector3(), fwd = new THREE.Vector3(), tmp = new THREE.Vector3();
 const qPar = new THREE.Quaternion(), eul = new THREE.Euler();
 const warm = new THREE.Color('#ff8a50');
-let dimAll = 0;
+const zero2 = new THREE.Vector2(), pTarget = new THREE.Vector2();
+let dimAll = 0, needsRender = 2, lastSig = '';
 const clock = new THREE.Clock();
+// suivi de la fluidité : si le rendu est trop lent, on baisse la résolution
+let perfT = 0, perfN = 0;
 
 function tick() {
+  requestAnimationFrame(tick);
   const dt = Math.min(clock.getDelta(), 0.05);
-  if (introDone && !busy && !pageOpen && !indexHover) setHover(pick());
+  if (pageOpen && !busy) return; // page projet ouverte : la maquette est cachée, rien à faire
+
+  if (introDone && !busy && !pageOpen && !indexHover && pointerMoved) { pointerMoved = false; setHover(pick()); }
 
   // parallaxe légère, seulement en vue d'ensemble
   const parAmt = activeRoom ? 0 : 1;
-  smoothP.lerp(finePointer && !pageOpen ? pointer.clone().clampScalar(-1, 1) : new THREE.Vector2(), 1 - Math.pow(0.002, dt));
+  pTarget.copy(finePointer && !pageOpen ? pointer : zero2).clampScalar(-1, 1);
+  smoothP.lerp(pTarget, 1 - Math.pow(0.002, dt));
+  if (smoothP.distanceToSquared(pTarget) < 1e-8) smoothP.copy(pTarget);
   eul.set(smoothP.y * 0.025 * parAmt, -smoothP.x * 0.035 * parAmt, 0, 'YXZ');
   qPar.setFromEuler(eul);
   camera.quaternion.copy(view.q).multiply(qPar);
@@ -470,12 +501,18 @@ function tick() {
   camera.zoom = view.zoom;
   camera.updateProjectionMatrix();
 
-  // éclairage des pièces
+  // éclairage des pièces (calculé seulement pendant les transitions)
   const ease = 1 - Math.pow(0.0005, dt);
-  dimAll += ((hovered ? 1 : 0) - dimAll) * ease;
+  const snap = (v, t) => (Math.abs(t - v) < 1e-3 ? t : v + (t - v) * ease);
+  dimAll = snap(dimAll, hovered ? 1 : 0);
+  let moved = false, sigK = 0;
   for (const id in rooms) {
     const r = rooms[id];
-    r.k += ((hovered === id ? 1 : 0) - r.k) * ease;
+    const k = snap(r.k, hovered === id ? 1 : 0);
+    const changed = k !== r.k || r._dim !== dimAll || r._lift !== r.lift;
+    r.k = k; sigK += k + r.lift * 7;
+    if (!changed && r._init) continue;
+    r._init = true; r._dim = dimAll;
     const dim = dimAll * (1 - r.k) * 0.38;
     for (const m of r.meshes) {
       const mat = m.material;
@@ -484,15 +521,19 @@ function tick() {
       if (!mat.userData.em) mat.userData.em = mat.emissive.clone();
       mat.emissive.copy(mat.userData.em).lerp(warm, r.k * 0.1);
     }
-    for (const p of r.props) if (introDone) p.position.y = p.userData.y0 + r.k * 0.12 + r.lift;
-    for (const w of r.walls) if (introDone) w.position.y = r.lift;
+    if (introDone && (r._lift !== r.lift || changed)) {
+      for (const p of r.props) p.position.y = p.userData.y0 + r.k * 0.12 + r.lift;
+      for (const w of r.walls) w.position.y = r.lift;
+      moved = true;
+    }
+    r._lift = r.lift;
   }
   if (hovered) {
     const c = rooms[hovered].center;
     lamp.target.position.lerp(c, ease);
     lamp.position.lerp(tmp.set(c.x - 2, 10, c.z + 2), ease);
   }
-  lamp.intensity += ((hovered ? 2.2 : 0) - lamp.intensity) * ease;
+  lamp.intensity = snap(lamp.intensity, hovered ? 2.2 : 0);
 
   // étiquette
   if (hovered) {
@@ -501,7 +542,27 @@ function tick() {
     tag.style.transform = `translate(${(v.x + 1) / 2 * innerWidth}px, ${(1 - v.y) / 2 * innerHeight}px) translate(-50%,-100%)`;
   }
 
-  if (!pageOpen || busy) renderer.render(scene, camera);
-  requestAnimationFrame(tick);
+  // faut-il redessiner ?
+  const introRunning = introTl && !introDone;
+  const q = camera.quaternion;
+  const sig = [camera.position.x, camera.position.y, camera.position.z, q.x, q.y, q.z, q.w, camera.zoom, dimAll, lamp.intensity, sigK, subtitle ? subtitle.scale.x : 0]
+    .map(v => v.toFixed(5)).join();
+  if (sig !== lastSig) { lastSig = sig; needsRender = Math.max(needsRender, 1); }
+  if (introRunning) needsRender = Math.max(needsRender, 1);
+  if (introRunning || moved) renderer.shadowMap.needsUpdate = true;
+  if (needsRender > 0) {
+    needsRender--;
+    renderer.render(scene, camera);
+    // adaptation : moyenne sur ~1 s de rendu continu
+    perfT += dt; perfN++;
+    if (perfN >= 45) {
+      const ms = perfT / perfN * 1000; perfT = 0; perfN = 0;
+      if (ms > 30 && renderer.getPixelRatio() > 1) {
+        dprCap = Math.max(1, renderer.getPixelRatio() * 0.8);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, dprCap)); renderer.setSize(innerWidth, innerHeight, false);
+        needsRender = 2;
+      }
+    }
+  } else { perfT = 0; perfN = 0; }
 }
 requestAnimationFrame(tick);
