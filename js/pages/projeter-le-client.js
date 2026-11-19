@@ -85,7 +85,7 @@ export default {
 
     const $ = (s, r = root) => r.querySelector(s);
     const $$ = (s, r = root) => [...r.querySelectorAll(s)];
-    scroller.style.setProperty('--room', '#EFECE6');
+    ctx.page.style.setProperty('--room', '#EFECE6');
 
     // ----- fil d'Ariane en escalier -----
     const steps = $$('.pc-step'), stepLabel = $('.pc-steps-l');

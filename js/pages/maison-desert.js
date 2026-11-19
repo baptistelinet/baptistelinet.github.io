@@ -3,7 +3,7 @@ import { esc } from './_kit.js';
 export default {
   mount(ctx) {
     const { root, scroller, gsap, ScrollTrigger, project: p, images: im, reduced, signal } = ctx;
-    scroller.style.setProperty('--room', '#E5CBB6');
+    ctx.page.style.setProperty('--room', '#E5CBB6');
     const st = (o) => Object.assign({ scroller }, o);
     const fine = matchMedia('(pointer:fine)').matches && innerWidth > 700;
 
