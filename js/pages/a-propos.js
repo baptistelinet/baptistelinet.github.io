@@ -1,7 +1,7 @@
 import { ROOMS } from '../projects.js';
 import { esc, split } from './_kit.js';
 
-const TITLES = Object.fromEntries(Object.values(ROOMS).map(r => [r.slug, r.title]));
+const TITLES = Object.fromEntries(Object.values(ROOMS).filter(r => r.slug).map(r => [r.slug, r.title]));
 const WORDS = ['Architecture', '3D', 'Sport', 'Musique', 'Photo'];
 const TOOLS = [
   ['Archicad', 'outil de prédilection : modéliser en 3D en générant plans et coupes en simultané'],
@@ -18,20 +18,22 @@ const QUALITIES = [
   ['Communication & écoute', 'Le dialogue est au cœur de mon processus : comprendre pour mieux concevoir.'],
   ['Esprit de synthèse & résolution de problème', 'Je transforme les idées complexes en solutions claires, efficaces et esthétiques.'],
 ];
-// Les 12 pièces de la maison forment le mot LINET (x0 = début de chaque lettre, lettres de 80 x 120)
+// Les 12 pièces de la maison forment le mot LINET (x0 = début de chaque lettre, lettres de 80 x 120).
+// Slug vide = pièce libre (dessinée en clair, sans lien) ; plusieurs traits peuvent porter le même projet.
 const SEGS = [
-  ['strate', 7, 7, 7, 113], ['projeter-le-client', 7, 113, 73, 113],
+  ['strate', 7, 7, 7, 113], ['strate', 7, 113, 73, 113],
   ['vespasian-ix', 144, 7, 144, 113],
-  ['maison-biarritz', 215, 113, 215, 7], ['bulle-musicale', 215, 7, 281, 113], ['cinque-frati', 281, 113, 281, 7],
-  ['salle-de-cinema', 319, 7, 319, 113], ['maison-californienne', 319, 7, 385, 7], ['maison-desert', 319, 60, 372, 60], ['labo-rendus', 319, 113, 385, 113],
+  ['maison-biarritz', 215, 113, 215, 7], ['', 215, 7, 281, 113], ['cinque-frati', 281, 113, 281, 7],
+  ['salle-de-cinema', 319, 7, 319, 113], ['', 319, 7, 385, 7], ['', 319, 60, 372, 60], ['labo-rendus', 319, 113, 385, 113],
   ['a-propos', 423, 7, 489, 7], ['contact', 456, 7, 456, 113],
 ];
+const PLACES = [...new Set(SEGS.map(s => s[0]).filter(Boolean))];
 function planSvg({ links = false, cls = '' } = {}) {
-  const seg = s => `<line class="seg${s[0] === 'bulle-musicale' ? ' dg' : ''}" data-slug="${s[0]}" x1="${s[1]}" y1="${s[2]}" x2="${s[3]}" y2="${s[4]}" pathLength="1"/>`;
-  const body = SEGS.map(s => links
+  const seg = s => `<line class="seg${s[1] === 215 && s[3] === 281 ? ' dg' : ''}${s[0] ? '' : ' vide'}" data-slug="${s[0]}" x1="${s[1]}" y1="${s[2]}" x2="${s[3]}" y2="${s[4]}" pathLength="1"/>`;
+  const body = SEGS.map(s => links && s[0]
     ? `<a href="#/${s[0]}" data-slug="${s[0]}" aria-label="${esc(TITLES[s[0]] || s[0])}"><line class="hit" x1="${s[1]}" y1="${s[2]}" x2="${s[3]}" y2="${s[4]}"/>${seg(s)}</a>`
     : seg(s)).join('');
-  return `<svg class="ap-plan ${cls}" viewBox="0 0 496 120" ${links ? 'role="group" aria-label="Plan LINET : les 12 pièces"' : 'aria-hidden="true"'} preserveAspectRatio="xMidYMid meet">${body}</svg>`;
+  return `<svg class="ap-plan ${cls}" viewBox="0 0 496 120" ${links ? 'role="group" aria-label="Plan LINET"' : 'aria-hidden="true"'} preserveAspectRatio="xMidYMid meet">${body}</svg>`;
 }
 
 export default {
@@ -84,7 +86,7 @@ export default {
     // Pièces allumées (hero + carte finale)
     const lit = () => {
       $$('.seg').forEach(l => l.classList.toggle('on', isVisited(l.dataset.slug)));
-      $('.ap-visit-n').textContent = `${SEGS.filter(s => isVisited(s[0])).length} / ${SEGS.length} pièces visitées`;
+      $('.ap-visit-n').textContent = `${PLACES.filter(isVisited).length} / ${PLACES.length} pièces visitées`;
     };
     lit();
     const nameEl = $('.ap-visit-name');
