@@ -369,11 +369,12 @@ function roomScreenRect(r) {
 /* ---------- Pages projet : un module par projet (js/pages/<slug>.js) ---------- */
 const ScrollTrigger = window.ScrollTrigger;
 gsap.registerPlugin(ScrollTrigger);
-// Les pages défilent dans un calque plein écran (#page). Par défaut GSAP « épingle » alors les sections
-// en les déplaçant à chaque image, avec un temps de retard sur le défilement réel : d'où des va-et-vient.
-// En épinglant en position fixe, la section reste parfaitement immobile.
-ScrollTrigger.defaults({ scroller: page, pinType: 'fixed' });
+// Les pages projet défilent avec la fenêtre elle-même (et non dans un calque qui défile) :
+// défilement natif au doigt comme à la molette, et sections épinglées parfaitement immobiles.
+const scrollEl = document.scrollingElement || document.documentElement;
 ScrollTrigger.config({ ignoreMobileResize: true });
+// déclencheur permanent : garde ScrollTrigger à l'écoute du défilement entre deux pages (mémoire de position à jour)
+ScrollTrigger.create({ start: 0, end: 'max' });
 // Recalcul des positions seulement si la hauteur de la page change vraiment (images, polices), et en différé
 let roH = 0, roT = 0;
 const ro = new ResizeObserver(() => {
@@ -415,19 +416,21 @@ function mountPage(id, { mod, images }) {
   page.classList.toggle('dark', p.color.toLowerCase() === '#2b2622');
   pRoot.className = `pg pg-${p.slug}`;
   pRoot.innerHTML = '';
-  page.scrollTop = 0;
+  window.scrollTo(0, 0);
   fillNav(id);
   try { const v = JSON.parse(localStorage.getItem('linet-visited') || '[]'); if (!v.includes(p.slug)) { v.push(p.slug); localStorage.setItem('linet-visited', JSON.stringify(v)); } } catch (e) {}
   pageAbort = new AbortController();
-  const ctx = { root: pRoot, scroller: page, gsap, ScrollTrigger, project: p, images, reduced, signal: pageAbort.signal };
+  const ctx = { root: pRoot, scroller: scrollEl, page, gsap, ScrollTrigger, project: p, images, reduced, signal: pageAbort.signal };
   pageCtx = gsap.context((self) => {
     ctx.add = (fn) => pageCtx ? pageCtx.add(fn) : fn();
     mod.mount(ctx);
   }, page);
-  requestAnimationFrame(() => { ScrollTrigger.refresh(); roH = pRoot.offsetHeight; ro.observe(pRoot); });
+  // remise en haut : on prévient ScrollTrigger (sinon il garde en mémoire la position de la page précédente)
+  requestAnimationFrame(() => { window.scrollTo(0, 0); window.dispatchEvent(new Event('scroll')); ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory(); ScrollTrigger.refresh(); roH = pRoot.offsetHeight; ro.observe(pRoot); });
 }
 function unmountPage() {
   ro.disconnect(); clearTimeout(roT);
+  window.scrollTo(0, 0); ScrollTrigger.clearScrollMemory && ScrollTrigger.clearScrollMemory();
   if (pageAbort) { pageAbort.abort(); pageAbort = null; }
   if (pageCtx) { pageCtx.revert(); pageCtx = null; }
   page.style.removeProperty('--room'); page.style.removeProperty('background');
@@ -461,7 +464,8 @@ function openRoom(id, instant = false) {
       body.classList.add('has-page'); pageOpen = true;
       page.classList.add('open'); page.setAttribute('aria-hidden', 'false');
       const [a0, a1, a2, a3] = roomScreenRect(r), ins = { a0, a1, a2, a3 };
-      const setClip = () => { page.style.clipPath = `inset(${ins.a0}px ${ins.a1}px ${ins.a2}px ${ins.a3}px)`; };
+      // le calque est aussi haut que tout le contenu : le bas du masque se mesure depuis le bas de l'écran
+      const setClip = () => { page.style.clipPath = `inset(${ins.a0}px ${ins.a1}px ${Math.max(0, page.offsetHeight - innerHeight) + ins.a2}px ${ins.a3}px)`; };
       setClip();
       gsap.to(ins, { a0: 0, a1: 0, a2: 0, a3: 0, duration: instant ? 0.01 : 0.6, ease: 'power3.inOut', onUpdate: setClip, onComplete: () => { page.style.clipPath = 'none'; ScrollTrigger.refresh(); } });
     });
@@ -475,7 +479,7 @@ function closeRoom() {
   const home = homeTarget();
   gsap.to(page, { opacity: 0, duration: 0.3, onComplete: () => {
     page.classList.remove('open'); page.style.opacity = ''; page.setAttribute('aria-hidden', 'true');
-    body.classList.remove('has-page'); pageOpen = false; unmountPage();
+    body.classList.remove('has-page'); pageOpen = false; unmountPage(); window.scrollTo(0, 0);
   } });
   gsap.to(from, {
     t: 1, duration: reduced ? 0.01 : 0.95, ease: 'expo.inOut', delay: 0.1,
