@@ -3,7 +3,7 @@ import { $$, esc, fig, split } from './_kit.js';
 export default {
   mount(ctx) {
     const { root, scroller, gsap, ScrollTrigger, project: p, images: im, reduced, signal } = ctx;
-    scroller.style.setProperty('--room', '#CBD3BE');
+    ctx.page.style.setProperty('--room', '#CBD3BE');
     const st = (o) => Object.assign({ scroller }, o);
     const fine = matchMedia('(pointer:fine)').matches && innerWidth > 700;
     const BEAT = 0.5; // 120 bpm
